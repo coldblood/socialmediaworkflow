@@ -1,0 +1,15 @@
+dialog.DataState.dataState.x=182
+dialog.DataState.dataState.y=182
+dialog.UserTask.height=768
+dialog.UserTask.width=1366
+do.core.validation=true
+eclipse.preferences.version=1
+list.DataInput.expanded=true
+list.DataOutput.expanded=true
+list.InputSet.expanded=true
+list.OutputSet.expanded=true
+list.Property.expanded=true
+list.ResourceRole.expanded=true
+section.DataState.Documentation..expanded=true
+section.UserTask.Appearance..expanded=true
+section.UserTask.Documentation..expanded=true

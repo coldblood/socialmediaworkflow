@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="commentProcess" name="Comment process" isExecutable="true">
+    <startEvent id="alfrescoStartevent1" name="Alfresco start" activiti:formKey="wf:submitAdhocTask"></startEvent>
+    <userTask id="alfrescoUsertask1" name="Manager review" activiti:candidateGroups="engineering" activiti:formKey="wf:adhocTask">
+      <documentation>Approval needed for comment by ${user}
+				under nick ${nick} :
+
+				${reply} on ${screen} 's status : ${id}</documentation>
+      <extensionElements>
+        <activiti:formProperty id="decisionApproved" name="Do you approve this ?" type="enum" required="true">
+          <activiti:value id="true" name="Approve"></activiti:value>
+          <activiti:value id="false" name="Reject"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <serviceTask id="servicetask1" name="Service Task" activiti:class="com.rest.CommentDelegate"></serviceTask>
+    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="alfrescoStartevent1" targetRef="alfrescoUsertask1"></sequenceFlow>
+    <exclusiveGateway id="requestApprovedDecision" name="Request approved?"></exclusiveGateway>
+    <sequenceFlow id="flow17" sourceRef="requestApprovedDecision" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decisionApproved == 'false'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="alfrescoUsertask1" targetRef="requestApprovedDecision"></sequenceFlow>
+    <userTask id="alfrescoUsertask2" name="BU Admin" activiti:candidateGroups="management" activiti:formKey="wf:adhocTask">
+      <documentation>Approval needed for comment by ${user}
+				under nick ${nick} :
+				${reply} on ${screen} 's status : ${id}</documentation>
+      <extensionElements>
+        <activiti:formProperty id="buDecisionApproved" name="Do you approve this ?" type="enum" required="true">
+          <activiti:value id="true" name="Approve"></activiti:value>
+          <activiti:value id="false" name="Reject"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow20" sourceRef="requestApprovedDecision" targetRef="alfrescoUsertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decisionApproved == 'true'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="requestBUApprovedDecision" name="BU Request approved? "></exclusiveGateway>
+    <sequenceFlow id="flow24" sourceRef="alfrescoUsertask2" targetRef="requestBUApprovedDecision"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="requestBUApprovedDecision" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${buDecisionApproved == 'true'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="requestBUApprovedDecision" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${buDecisionApproved == 'false'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_commentProcess">
+    <bpmndi:BPMNPlane bpmnElement="commentProcess" id="BPMNPlane_commentProcess">
+      <bpmndi:BPMNShape bpmnElement="alfrescoStartevent1" id="BPMNShape_alfrescoStartevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="alfrescoUsertask1" id="BPMNShape_alfrescoUsertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="542.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="630.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="requestApprovedDecision" id="BPMNShape_requestApprovedDecision">
+        <omgdc:Bounds height="40.0" width="40.0" x="320.0" y="187.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="alfrescoUsertask2" id="BPMNShape_alfrescoUsertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="392.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="requestBUApprovedDecision" id="BPMNShape_requestBUApprovedDecision">
+        <omgdc:Bounds height="40.0" width="40.0" x="539.0" y="77.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="682.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="337.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="105.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="340.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="542.0" y="337.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="255.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="340.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="392.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="497.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="539.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="579.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="559.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

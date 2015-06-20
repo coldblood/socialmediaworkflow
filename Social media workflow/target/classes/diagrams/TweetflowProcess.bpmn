@@ -3,7 +3,7 @@
   <process id="tweetProcess" name="Tweet process" isExecutable="true">
     <startEvent id="alfrescoStartevent1" name="Alfresco start" activiti:formKey="wf:submitAdhocTask"></startEvent>
     <userTask id="alfrescoUsertask1" name="Manager review" activiti:candidateGroups="engineering" activiti:formKey="wf:adhocTask">
-      <documentation>Approval needed for tweet by ${user} : 
+      <documentation>Approval needed for tweet by ${userName} : 
 
 ${tweet}</documentation>
       <extensionElements>

@@ -12,10 +12,10 @@ public class WsDelegate implements org.activiti.engine.delegate.JavaDelegate {
 	@Override
 	public void execute(DelegateExecution arg0) throws Exception {
 		String text = arg0.getVariable("tweet").toString();
-		String user = arg0.getVariable("user").toString();
-		String nick = arg0.getVariable("nick").toString();
+		String user = arg0.getVariable("userName").toString();
+		String nick = arg0.getVariable("Nick").toString();
 		String url = "http://localhost:12392/Twitter/ProcessTweet?status="
-				+ text + "&user=" + user + "&nick=" + nick;
+				+ text + "&userName=" + user + "&Nick=" + nick;
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod("GET");

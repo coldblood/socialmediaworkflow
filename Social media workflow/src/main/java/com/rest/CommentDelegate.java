@@ -13,12 +13,12 @@ public class CommentDelegate implements
 	@Override
 	public void execute(DelegateExecution arg0) throws Exception {
 		String text = arg0.getVariable("reply").toString();
-		String user = arg0.getVariable("user").toString();
-		String nick = arg0.getVariable("nick").toString();
+		String user = arg0.getVariable("userName").toString();
+		String nick = arg0.getVariable("Nick").toString();
 		String id = arg0.getVariable("id").toString();
 		String screen = arg0.getVariable("screen").toString();
 		String url = "http://localhost:12392/Twitter/ProcessReply?statusId="
-				+ id + "&user=" + user + "&screenName=" + screen + "&nick="
+				+ id + "&userName=" + user + "&screenName=" + screen + "&Nick="
 				+ nick + "&text=" + text;
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();

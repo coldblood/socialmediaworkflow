@@ -3,8 +3,8 @@
   <process id="commentProcess" name="Comment process" isExecutable="true">
     <startEvent id="alfrescoStartevent1" name="Alfresco start" activiti:formKey="wf:submitAdhocTask"></startEvent>
     <userTask id="alfrescoUsertask1" name="Manager review" activiti:candidateGroups="engineering" activiti:formKey="wf:adhocTask">
-      <documentation>Approval needed for comment by ${user}
-				under nick ${nick} :
+      <documentation>Approval needed for comment by ${userName}
+				under nick ${Nick} :
 
 				${reply} on ${screen} 's status : ${id}</documentation>
       <extensionElements>
@@ -24,8 +24,8 @@
     </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="alfrescoUsertask1" targetRef="requestApprovedDecision"></sequenceFlow>
     <userTask id="alfrescoUsertask2" name="BU Admin" activiti:candidateGroups="management" activiti:formKey="wf:adhocTask">
-      <documentation>Approval needed for comment by ${user}
-				under nick ${nick} :
+      <documentation>Approval needed for comment by ${userName}
+				under nick ${Nick} :
 				${reply} on ${screen} 's status : ${id}</documentation>
       <extensionElements>
         <activiti:formProperty id="buDecisionApproved" name="Do you approve this ?" type="enum" required="true">
